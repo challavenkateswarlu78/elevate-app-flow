@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight, Play } from "lucide-react";
+import dashboardPreview from "@/assets/dashboard-preview.jpg";
 
 export function Hero() {
   return (
@@ -11,7 +12,6 @@ export function Hero() {
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse-glow" />
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-violet/20 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: "2s" }} />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan/10 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: "4s" }} />
-        {/* Dot grid overlay */}
         <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)", backgroundSize: "30px 30px" }} />
       </div>
 
@@ -59,32 +59,39 @@ export function Hero() {
           </div>
         </motion.div>
 
-        {/* Dashboard mockup */}
+        {/* Dashboard Preview - Real Screenshot */}
         <motion.div
-          initial={{ opacity: 0, y: 60 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 60, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
           className="mt-16 relative max-w-5xl mx-auto"
         >
-          <div className="rounded-2xl border border-primary-foreground/10 bg-primary-foreground/5 backdrop-blur-sm p-2 shadow-2xl shadow-primary/10">
-            <div className="rounded-xl bg-gradient-to-b from-primary-foreground/10 to-transparent aspect-[16/9] flex items-center justify-center">
-              <div className="grid grid-cols-3 gap-4 p-8 w-full max-w-3xl">
-                {/* Mock dashboard cards */}
-                {[
-                  { label: "Active Projects", value: "24", color: "bg-primary/30" },
-                  { label: "Team Members", value: "48", color: "bg-cyan/30" },
-                  { label: "Storage Used", value: "847 GB", color: "bg-violet/30" },
-                ].map((card) => (
-                  <div key={card.label} className={`${card.color} rounded-xl p-4 backdrop-blur-sm animate-float`}>
-                    <p className="text-primary-foreground/50 text-xs">{card.label}</p>
-                    <p className="text-primary-foreground font-display font-bold text-2xl mt-1">{card.value}</p>
-                  </div>
-                ))}
+          <div className="rounded-2xl border border-primary-foreground/10 bg-primary-foreground/5 backdrop-blur-sm p-1.5 shadow-2xl shadow-primary/20 glow-shadow">
+            {/* macOS-style title bar */}
+            <div className="flex items-center gap-2 px-4 py-2.5 border-b border-primary-foreground/10">
+              <div className="flex gap-1.5">
+                <div className="w-3 h-3 rounded-full bg-destructive/80" />
+                <div className="w-3 h-3 rounded-full bg-amber" />
+                <div className="w-3 h-3 rounded-full bg-green" />
               </div>
+              <div className="flex-1 flex justify-center">
+                <div className="px-6 py-1 rounded-md bg-primary-foreground/5 text-primary-foreground/30 text-xs font-mono">
+                  app.nexacloud.io/dashboard
+                </div>
+              </div>
+              <div className="w-12" />
             </div>
+            {/* Dashboard image */}
+            <img
+              src={dashboardPreview}
+              alt="NexaCloud dashboard showing project management, team collaboration, calendar, and real-time chat"
+              width={1920}
+              height={1080}
+              className="rounded-b-xl w-full h-auto"
+            />
           </div>
           {/* Glow effect below */}
-          <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-3/4 h-20 bg-primary/20 blur-3xl rounded-full" />
+          <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-3/4 h-20 bg-primary/30 blur-3xl rounded-full" />
         </motion.div>
       </div>
     </section>

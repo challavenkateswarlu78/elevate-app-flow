@@ -1,13 +1,16 @@
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
+import avatar1 from "@/assets/avatar-1.jpg";
+import avatar2 from "@/assets/avatar-2.jpg";
+import avatar3 from "@/assets/avatar-3.jpg";
 
 const testimonials = [
-  { quote: "We were on 6 tools and paying $2,200/month. NexaCloud cut that to $89 and now our whole team actually knows where everything is.", name: "Priya M.", role: "Founder", company: "Stackflow Agency" },
-  { quote: "The SSO + endpoint security bundle alone justified the switch. IT onboarding went from 2 days to 20 minutes.", name: "James C.", role: "VP Engineering", company: "Meridian Co." },
-  { quote: "Sub-accounts changed how we manage clients. Each one gets their own space, their own files, their own billing.", name: "Sofia R.", role: "Ops Lead", company: "BluePeak Ventures" },
-  { quote: "We started on the free plan. Within 3 months the whole team was on Pro — it just became where we work.", name: "Arjun T.", role: "CEO", company: "Orion Health" },
-  { quote: "I manage 14 client dashboards from one tab. I didn't think that was possible before NexaCloud.", name: "Marcus L.", role: "Director", company: "Inkwell Agency" },
-  { quote: "The engagement score feature told us we were underusing the vault. We turned it on — game changer.", name: "Elena K.", role: "COO", company: "Helix Analytics" },
+  { quote: "We were on 6 tools and paying $2,200/month. NexaCloud cut that to $89 and now our whole team actually knows where everything is.", name: "Priya M.", role: "Founder", company: "Stackflow Agency", avatar: avatar1 },
+  { quote: "The SSO + endpoint security bundle alone justified the switch. IT onboarding went from 2 days to 20 minutes.", name: "James C.", role: "VP Engineering", company: "Meridian Co.", avatar: avatar2 },
+  { quote: "Sub-accounts changed how we manage clients. Each one gets their own space, their own files, their own billing.", name: "Sofia R.", role: "Ops Lead", company: "BluePeak Ventures", avatar: avatar3 },
+  { quote: "We started on the free plan. Within 3 months the whole team was on Pro — it just became where we work.", name: "Arjun T.", role: "CEO", company: "Orion Health", avatar: avatar2 },
+  { quote: "I manage 14 client dashboards from one tab. I didn't think that was possible before NexaCloud.", name: "Marcus L.", role: "Director", company: "Inkwell Agency", avatar: avatar3 },
+  { quote: "The engagement score feature told us we were underusing the vault. We turned it on — game changer.", name: "Elena K.", role: "COO", company: "Helix Analytics", avatar: avatar1 },
 ];
 
 export function Testimonials() {
@@ -33,7 +36,7 @@ export function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="break-inside-avoid mb-4 p-6 rounded-2xl border border-border bg-card hover:border-primary/20 transition-colors"
+              className="break-inside-avoid mb-4 p-6 rounded-2xl border border-border bg-card hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
             >
               <div className="flex gap-0.5 mb-3">
                 {[...Array(5)].map((_, j) => (
@@ -42,9 +45,14 @@ export function Testimonials() {
               </div>
               <p className="text-foreground leading-relaxed mb-4 text-sm">"{t.quote}"</p>
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-sm font-bold text-primary">
-                  {t.name[0]}
-                </div>
+                <img
+                  src={t.avatar}
+                  alt={t.name}
+                  loading="lazy"
+                  width={36}
+                  height={36}
+                  className="w-9 h-9 rounded-full object-cover ring-2 ring-border"
+                />
                 <div>
                   <p className="text-sm font-medium text-foreground">{t.name}</p>
                   <p className="text-xs text-muted-foreground">{t.role} · {t.company}</p>
