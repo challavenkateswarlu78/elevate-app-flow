@@ -1,15 +1,40 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { signIn } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email || !password) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    setLoading(true);
+    const { error } = await signIn(email, password);
+    setLoading(false);
+
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.success("Welcome back!");
+      navigate("/dashboard");
+    }
+  };
 
   return (
     <div className="min-h-screen flex">
@@ -29,7 +54,7 @@ const Login = () => {
           <p className="text-primary-foreground/50 text-sm mb-2">One workspace. Every tool your team needs.</p>
           <div className="mt-16 p-6 rounded-2xl bg-primary-foreground/5 border border-primary-foreground/10 backdrop-blur-sm">
             <p className="text-primary-foreground/80 text-sm italic leading-relaxed">
-              "NexaCloud replaced every tool we used. Setup took 20 minutes."
+              &quot;NexaCloud replaced every tool we used. Setup took 20 minutes.&quot;
             </p>
             <p className="text-primary-foreground/50 text-xs mt-3">— James C., VP Engineering @ Meridian Co.</p>
           </div>
@@ -55,7 +80,7 @@ const Login = () => {
           <h1 className="font-display font-bold text-2xl text-foreground mb-2">Welcome back</h1>
           <p className="text-muted-foreground text-sm mb-8">Sign in to your NexaCloud workspace</p>
 
-          <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div className="space-y-2">
               <Label htmlFor="email">Work email</Label>
               <Input
@@ -64,6 +89,7 @@ const Login = () => {
                 placeholder="you@company.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                disabled={loading}
               />
             </div>
             <div className="space-y-2">
@@ -71,9 +97,10 @@ const Login = () => {
               <Input
                 id="password"
                 type="password"
-                placeholder="••••••••"
+                placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                disabled={loading}
               />
             </div>
             <div className="flex items-center justify-between">
@@ -83,8 +110,17 @@ const Login = () => {
               </div>
               <a href="#" className="text-sm text-primary hover:underline">Forgot password?</a>
             </div>
-            <Button variant="hero" size="lg" className="w-full">
-              Sign in <ArrowRight className="ml-1" />
+            <Button variant="hero" size="lg" className="w-full" disabled={loading}>
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Signing in...
+                </>
+              ) : (
+                <>
+                  Sign in <ArrowRight className="ml-1" />
+                </>
+              )}
             </Button>
           </form>
 
@@ -99,8 +135,8 @@ const Login = () => {
           </div>
 
           <p className="text-center text-sm text-muted-foreground mt-8">
-            Don't have an account?{" "}
-            <Link to="/signup" className="text-primary font-medium hover:underline">Start free →</Link>
+            {"Don't have an account? "}
+            <Link to="/signup" className="text-primary font-medium hover:underline">Start free</Link>
           </p>
         </motion.div>
       </div>

@@ -1,16 +1,52 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 const Signup = () => {
   const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", password: "", company: "", teamSize: "", useCase: "", source: "" });
+  const { signUp } = useAuth();
+  const navigate = useNavigate();
 
   const update = (field: string, value: string) => setForm((f) => ({ ...f, [field]: value }));
+
+  const handleStep1Submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!form.name || !form.email || !form.password) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    if (form.password.length < 8) {
+      toast.error("Password must be at least 8 characters");
+      return;
+    }
+
+    setStep(2);
+  };
+
+  const handleStep2Submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    setLoading(true);
+    const { error } = await signUp(form.email, form.password, form.name);
+    setLoading(false);
+
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.success("Account created! Please check your email to confirm your account.");
+      navigate("/login");
+    }
+  };
 
   return (
     <div className="min-h-screen flex">
@@ -39,7 +75,7 @@ const Signup = () => {
           </div>
           <div className="p-6 rounded-2xl bg-primary-foreground/5 border border-primary-foreground/10 backdrop-blur-sm">
             <p className="text-primary-foreground/80 text-sm italic leading-relaxed">
-              "We onboarded our entire 40-person team in one afternoon."
+              &quot;We onboarded our entire 40-person team in one afternoon.&quot;
             </p>
             <p className="text-primary-foreground/50 text-xs mt-3">— Sofia R., Ops Lead @ BluePeak Ventures</p>
           </div>
@@ -73,8 +109,8 @@ const Signup = () => {
             {step === 1 ? (
               <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                 <h1 className="font-display font-bold text-2xl text-foreground mb-2">Start your free workspace</h1>
-                <p className="text-muted-foreground text-sm mb-8">14-day Pro trial · No credit card · Cancel anytime</p>
-                <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); setStep(2); }}>
+                <p className="text-muted-foreground text-sm mb-8">14-day Pro trial - No credit card - Cancel anytime</p>
+                <form className="space-y-4" onSubmit={handleStep1Submit}>
                   <div className="space-y-2">
                     <Label htmlFor="name">Full name</Label>
                     <Input id="name" placeholder="Jane Doe" value={form.name} onChange={(e) => update("name", e.target.value)} />
@@ -104,7 +140,7 @@ const Signup = () => {
               <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                 <h1 className="font-display font-bold text-2xl text-foreground mb-2">Set up your workspace</h1>
                 <p className="text-muted-foreground text-sm mb-8">Tell us a bit about your team so we can customize your experience.</p>
-                <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+                <form className="space-y-4" onSubmit={handleStep2Submit}>
                   <div className="space-y-2">
                     <Label htmlFor="company">Company / Team name</Label>
                     <Input id="company" placeholder="Acme Inc." value={form.company} onChange={(e) => update("company", e.target.value)} />
@@ -148,9 +184,18 @@ const Signup = () => {
                     </div>
                   </div>
                   <div className="flex gap-3 pt-2">
-                    <Button variant="outline" size="lg" onClick={() => setStep(1)}>Back</Button>
-                    <Button variant="hero" size="lg" className="flex-1">
-                      Create my workspace <ArrowRight className="ml-1" />
+                    <Button variant="outline" size="lg" onClick={() => setStep(1)} type="button" disabled={loading}>Back</Button>
+                    <Button variant="hero" size="lg" className="flex-1" type="submit" disabled={loading}>
+                      {loading ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Creating...
+                        </>
+                      ) : (
+                        <>
+                          Create my workspace <ArrowRight className="ml-1" />
+                        </>
+                      )}
                     </Button>
                   </div>
                 </form>
@@ -163,7 +208,7 @@ const Signup = () => {
 
           <p className="text-center text-sm text-muted-foreground mt-8">
             Already have an account?{" "}
-            <Link to="/login" className="text-primary font-medium hover:underline">Sign in →</Link>
+            <Link to="/login" className="text-primary font-medium hover:underline">Sign in</Link>
           </p>
         </motion.div>
       </div>

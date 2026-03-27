@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Menu, X, ChevronDown, MessageSquare, Video, FileBox, Shield, Users, Zap, BookOpen, FileText, Newspaper, HelpCircle, ArrowRight, Check, Sparkles } from "lucide-react";
+import { Menu, X, ChevronDown, MessageSquare, Video, FileBox, Shield, Users, Zap, BookOpen, FileText, Newspaper, HelpCircle, ArrowRight, Sparkles, CreditCard, BarChart3, MessageCircle, ShoppingBag, Workflow, Plus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface DropdownItem {
   icon: React.ElementType;
@@ -33,6 +34,14 @@ const resourceItems: DropdownItem[] = [
   { icon: FileText, title: "Case Studies", desc: "Real results from real teams", href: "/#resources" },
   { icon: Newspaper, title: "Blog", desc: "Insights for modern teams", href: "/#resources" },
   { icon: HelpCircle, title: "Help Center", desc: "FAQs & support tickets", href: "/#faq" },
+];
+
+const integrationItems: DropdownItem[] = [
+  { icon: CreditCard, title: "Stripe", desc: "Payment processing & billing", href: "/#integrations" },
+  { icon: BarChart3, title: "Google Analytics", desc: "Website & app analytics", href: "/#integrations" },
+  { icon: MessageCircle, title: "Slack", desc: "Team communication", href: "/#integrations" },
+  { icon: ShoppingBag, title: "Shopify", desc: "E-commerce platform", href: "/#integrations" },
+  { icon: Workflow, title: "Zapier", desc: "Workflow automation", href: "/#integrations" },
 ];
 
 function MegaMenu({ items, isOpen, onClose, featured }: { items: DropdownItem[]; isOpen: boolean; onClose: () => void; featured?: { title: string; desc: string; href: string } }) {
@@ -101,8 +110,15 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
   const isHome = location.pathname === "/";
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -179,13 +195,22 @@ export function Navbar() {
             Features
           </button>
 
-          {/* Integrations */}
-          <button
-            onClick={() => handleNavClick("/#integrations")}
-            className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50"
+          {/* Integrations dropdown */}
+          <div
+            className="relative"
+            onMouseEnter={() => handleMenuEnter("integrations")}
+            onMouseLeave={handleMenuLeave}
           >
-            Integrations
-          </button>
+            <button className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50">
+              Integrations <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${openMenu === "integrations" ? "rotate-180" : ""}`} />
+            </button>
+            <MegaMenu
+              items={integrationItems}
+              isOpen={openMenu === "integrations"}
+              onClose={() => setOpenMenu(null)}
+              featured={{ title: "Request an integration →", desc: "Don't see your tool? Let us know", href: "/dashboard" }}
+            />
+          </div>
 
           {/* Pricing dropdown */}
           <div
@@ -235,12 +260,23 @@ export function Navbar() {
         {/* Right side */}
         <div className="hidden lg:flex items-center gap-3">
           <ThemeToggle />
-          <Link to="/login">
-            <Button variant="ghost" size="sm">Log in</Button>
-          </Link>
-          <Link to="/signup">
-            <Button variant="hero" size="sm" className="shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-shadow">Start free →</Button>
-          </Link>
+          {user ? (
+            <>
+              <Link to="/dashboard">
+                <Button variant="ghost" size="sm">Dashboard</Button>
+              </Link>
+              <Button variant="outline" size="sm" onClick={handleSignOut}>Sign out</Button>
+            </>
+          ) : (
+            <>
+              <Link to="/login">
+                <Button variant="ghost" size="sm">Log in</Button>
+              </Link>
+              <Link to="/signup">
+                <Button variant="hero" size="sm" className="shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-shadow">Start free</Button>
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile menu toggle */}
@@ -269,12 +305,23 @@ export function Navbar() {
               <button onClick={() => handleNavClick("/#resources")} className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground text-left rounded-lg hover:bg-secondary/50">Resources</button>
               <Link to="/organisation" onClick={() => setMobileOpen(false)} className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground text-left rounded-lg hover:bg-secondary/50">Organisation</Link>
               <div className="flex gap-2 mt-2">
-                <Link to="/login" className="flex-1">
-                  <Button variant="outline" className="w-full" onClick={() => setMobileOpen(false)}>Log in</Button>
-                </Link>
-                <Link to="/signup" className="flex-1">
-                  <Button variant="hero" className="w-full" onClick={() => setMobileOpen(false)}>Start free</Button>
-                </Link>
+                {user ? (
+                  <>
+                    <Link to="/dashboard" className="flex-1">
+                      <Button variant="outline" className="w-full" onClick={() => setMobileOpen(false)}>Dashboard</Button>
+                    </Link>
+                    <Button variant="hero" className="flex-1" onClick={() => { handleSignOut(); setMobileOpen(false); }}>Sign out</Button>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/login" className="flex-1">
+                      <Button variant="outline" className="w-full" onClick={() => setMobileOpen(false)}>Log in</Button>
+                    </Link>
+                    <Link to="/signup" className="flex-1">
+                      <Button variant="hero" className="w-full" onClick={() => setMobileOpen(false)}>Start free</Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </motion.div>
