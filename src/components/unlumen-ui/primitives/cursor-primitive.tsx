@@ -253,7 +253,7 @@ function CursorFollow({
   const { cursorPos, active, cursorRef, global } = useCursor();
   const cursorFollowRef = React.useRef<HTMLDivElement>(null);
   React.useImperativeHandle(
-    ref,
+    ref as React.Ref<HTMLDivElement>,
     () => cursorFollowRef.current as HTMLDivElement,
   );
 

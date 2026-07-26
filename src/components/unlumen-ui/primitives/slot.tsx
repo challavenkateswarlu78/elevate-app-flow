@@ -31,7 +31,7 @@ function useComposedRefs<T>(
         if (typeof ref === "function") {
           ref(node);
         } else {
-          (ref as React.RefObject<T | null>).current = node;
+          (ref as React.MutableRefObject<T | null>).current = node;
         }
       });
     },
