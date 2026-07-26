@@ -11,6 +11,7 @@ import { Stats } from "@/components/sections/Stats";
 import { FAQ } from "@/components/sections/FAQ";
 import { CTABanner } from "@/components/sections/CTABanner";
 import { Footer } from "@/components/sections/Footer";
+import { FloatingSearch } from "@/components/effects/FloatingSearch";
 
 const Index = () => {
   return (
@@ -28,8 +29,10 @@ const Index = () => {
       <FAQ />
       <CTABanner />
       <Footer />
+      <FloatingSearch />
     </div>
   );
 };
 
 export default Index;
+
