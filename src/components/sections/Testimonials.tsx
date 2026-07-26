@@ -1,9 +1,11 @@
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import { TextReveal } from "@/components/unlumen-ui/text-reveal";
+import { GradientBorderCard } from "@/components/effects/GradientBorderCard";
 import avatar1 from "@/assets/avatar-1.jpg";
 import avatar2 from "@/assets/avatar-2.jpg";
 import avatar3 from "@/assets/avatar-3.jpg";
+
 
 const testimonials = [
   { quote: "We were on 6 tools and paying $2,200/month. NexaCloud cut that to $89 and now our whole team actually knows where everything is.", name: "Priya M.", role: "Founder", company: "Stackflow Agency", avatar: avatar1 },
@@ -37,36 +39,39 @@ export function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="break-inside-avoid mb-4 p-6 rounded-2xl border border-border bg-card hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
+              className="break-inside-avoid mb-4"
             >
-              <div className="flex gap-0.5 mb-3">
-                {[...Array(5)].map((_, j) => (
-                  <Star key={j} className="h-4 w-4 fill-amber text-amber" />
-                ))}
-              </div>
-              <TextReveal
-                text={`"${t.quote}"`}
-                splitBy="words"
-                staggerDelay={0.03}
-                duration={0.5}
-                className="text-foreground mb-4 text-sm"
-              />
-              <div className="flex items-center gap-3">
-                <img
-                  src={t.avatar}
-                  alt={t.name}
-                  loading="lazy"
-                  width={36}
-                  height={36}
-                  className="w-9 h-9 rounded-full object-cover ring-2 ring-border"
-                />
-                <div>
-                  <p className="text-sm font-medium text-foreground">{t.name}</p>
-                  <p className="text-xs text-muted-foreground">{t.role} · {t.company}</p>
+              <GradientBorderCard innerClassName="p-6">
+                <div className="flex gap-0.5 mb-3">
+                  {[...Array(5)].map((_, j) => (
+                    <Star key={j} className="h-4 w-4 fill-amber text-amber" />
+                  ))}
                 </div>
-              </div>
+                <TextReveal
+                  text={`"${t.quote}"`}
+                  splitBy="words"
+                  staggerDelay={0.03}
+                  duration={0.5}
+                  className="text-foreground mb-4 text-sm"
+                />
+                <div className="flex items-center gap-3">
+                  <img
+                    src={t.avatar}
+                    alt={t.name}
+                    loading="lazy"
+                    width={36}
+                    height={36}
+                    className="w-9 h-9 rounded-full object-cover ring-2 ring-border"
+                  />
+                  <div>
+                    <p className="text-sm font-medium text-foreground">{t.name}</p>
+                    <p className="text-xs text-muted-foreground">{t.role} · {t.company}</p>
+                  </div>
+                </div>
+              </GradientBorderCard>
             </motion.div>
           ))}
+
         </div>
       </div>
     </section>

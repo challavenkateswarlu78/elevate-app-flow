@@ -88,17 +88,35 @@ export function Pricing() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className={`relative rounded-2xl border p-6 flex flex-col ${
+              className={`relative rounded-2xl border p-6 flex flex-col overflow-hidden ${
                 plan.popular
-                  ? "border-primary bg-primary/5 shadow-xl shadow-primary/10 scale-[1.02]"
+                  ? "border-primary/40 bg-card shadow-xl shadow-primary/20 scale-[1.02]"
                   : "border-border bg-card"
               }`}
             >
               {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-primary text-primary-foreground text-xs font-semibold rounded-full">
-                  Most Popular
-                </div>
+                <>
+                  {/* Animated blob backdrop */}
+                  <div aria-hidden className="pointer-events-none absolute inset-0 -z-0 overflow-hidden">
+                    <div
+                      className="absolute -top-16 -left-10 w-56 h-56 rounded-full blur-3xl opacity-40 animate-blob-drift"
+                      style={{ background: "radial-gradient(circle, hsl(var(--primary)) 0%, transparent 70%)" }}
+                    />
+                    <div
+                      className="absolute -bottom-16 -right-10 w-56 h-56 rounded-full blur-3xl opacity-40 animate-blob-drift"
+                      style={{
+                        background: "radial-gradient(circle, hsl(var(--violet)) 0%, transparent 70%)",
+                        animationDelay: "3s",
+                      }}
+                    />
+                  </div>
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-primary text-primary-foreground text-xs font-semibold rounded-full z-10">
+                    Most Popular
+                  </div>
+                </>
               )}
+              <div className="relative z-10 flex flex-col flex-1">
+
               <h3 className="font-display font-bold text-lg text-foreground">{plan.name}</h3>
               <p className="text-sm text-muted-foreground mt-1 mb-4">{plan.desc}</p>
               <div className="mb-6">
@@ -131,7 +149,9 @@ export function Pricing() {
                   {plan.cta} <ArrowRight className="ml-1 h-4 w-4" />
                 </Button>
               </Link>
+              </div>
             </motion.div>
+
           ))}
         </div>
       </div>

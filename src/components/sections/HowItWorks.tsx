@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { UserPlus, Plug, Rocket } from "lucide-react";
+import { Dock } from "@/components/effects/Dock";
+
 
 const steps = [
   {
@@ -42,10 +44,20 @@ export function HowItWorks() {
           <h2 className="font-display font-bold text-3xl md:text-4xl text-foreground mb-4">
             Up and running in under 10 minutes
           </h2>
-          <p className="text-muted-foreground max-w-xl mx-auto">
+          <p className="text-muted-foreground max-w-xl mx-auto mb-8">
             Three steps. That's all it takes to replace your entire tool stack.
           </p>
+
+          <Dock
+            items={steps.map((s, i) => ({
+              icon: <s.icon />,
+              label: s.title,
+              active: active === i,
+              onClick: () => setActive(i),
+            }))}
+          />
         </motion.div>
+
 
         <div className="grid lg:grid-cols-2 gap-12 items-start max-w-5xl mx-auto">
           {/* Step selectors */}
