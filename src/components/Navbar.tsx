@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { ThemeSwitch } from "@/components/unlumen-ui/theme-switch";
 import { Menu, X, ChevronDown, MessageSquare, Video, FileBox, Shield, Users, Zap, BookOpen, FileText, Newspaper, HelpCircle, ArrowRight, Check, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -234,7 +234,7 @@ export function Navbar() {
 
         {/* Right side */}
         <div className="hidden lg:flex items-center gap-3">
-          <ThemeToggle />
+          <ThemeSwitch />
           <Link to="/login">
             <Button variant="ghost" size="sm">Log in</Button>
           </Link>
@@ -245,7 +245,7 @@ export function Navbar() {
 
         {/* Mobile menu toggle */}
         <div className="flex lg:hidden items-center gap-2">
-          <ThemeToggle />
+          <ThemeSwitch />
           <Button variant="ghost" size="icon" onClick={() => setMobileOpen(!mobileOpen)}>
             {mobileOpen ? <X /> : <Menu />}
           </Button>
