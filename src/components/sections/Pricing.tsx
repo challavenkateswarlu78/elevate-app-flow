@@ -149,7 +149,9 @@ export function Pricing() {
                   {plan.cta} <ArrowRight className="ml-1 h-4 w-4" />
                 </Button>
               </Link>
+              </div>
             </motion.div>
+
           ))}
         </div>
       </div>
