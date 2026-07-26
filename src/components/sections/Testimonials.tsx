@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
+import { TextReveal } from "@/components/unlumen-ui/text-reveal";
 import avatar1 from "@/assets/avatar-1.jpg";
 import avatar2 from "@/assets/avatar-2.jpg";
 import avatar3 from "@/assets/avatar-3.jpg";
@@ -43,7 +44,13 @@ export function Testimonials() {
                   <Star key={j} className="h-4 w-4 fill-amber text-amber" />
                 ))}
               </div>
-              <p className="text-foreground leading-relaxed mb-4 text-sm">"{t.quote}"</p>
+              <TextReveal
+                text={`"${t.quote}"`}
+                splitBy="words"
+                staggerDelay={0.03}
+                duration={0.5}
+                className="text-foreground mb-4 text-sm"
+              />
               <div className="flex items-center gap-3">
                 <img
                   src={t.avatar}
