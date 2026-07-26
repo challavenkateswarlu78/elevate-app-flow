@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SpotlightCard } from "@/components/effects/SpotlightCard";
+import { MagneticButton } from "@/components/effects/MagneticButton";
+
 
 const categories: Record<string, string[]> = {
   "All": [],
@@ -86,15 +89,35 @@ export function Integrations() {
           ))}
         </motion.div>
 
-        {/* Bottom CTA */}
-        <div className="text-center mt-12">
-          <p className="text-muted-foreground text-sm mb-4">Don't see your tool? We add new integrations every month.</p>
-          <div className="flex justify-center gap-3">
-            <Button variant="outline" size="sm">Request an integration <ExternalLink className="ml-1 h-3 w-3" /></Button>
-            <Button variant="ghost" size="sm">View API docs →</Button>
-          </div>
+        {/* Bottom CTA — spotlight card + magnetic button */}
+        <div className="max-w-3xl mx-auto mt-14">
+          <SpotlightCard className="p-8 md:p-10 text-center">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold mb-4">
+              <Sparkles className="h-3.5 w-3.5" />
+              New integrations monthly
+            </div>
+            <h3 className="font-display font-bold text-2xl text-foreground mb-2">
+              Don't see your tool?
+            </h3>
+            <p className="text-muted-foreground text-sm mb-6 max-w-md mx-auto">
+              Request a native integration or build your own with our REST API. We ship connectors on a rolling basis.
+            </p>
+            <div className="flex flex-wrap justify-center gap-3">
+              <MagneticButton>
+                <Button variant="hero" size="lg">
+                  Request an integration <ExternalLink className="ml-1 h-4 w-4" />
+                </Button>
+              </MagneticButton>
+              <MagneticButton strength={0.25}>
+                <Button variant="outline" size="lg">
+                  View API docs →
+                </Button>
+              </MagneticButton>
+            </div>
+          </SpotlightCard>
         </div>
       </div>
     </section>
   );
 }
+

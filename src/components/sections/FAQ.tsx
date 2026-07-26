@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { TextReveal } from "@/components/unlumen-ui/text-reveal";
+
 
 const faqs = [
   { q: "What happens when my 14-day trial ends?", a: "You'll move to the Free plan automatically — no charge, no card needed. Upgrade anytime." },
@@ -23,8 +25,16 @@ export function FAQ() {
           className="text-center mb-12"
         >
           <p className="text-primary text-sm font-semibold uppercase tracking-wider mb-3">Got questions?</p>
-          <h2 className="font-display font-bold text-3xl md:text-4xl text-foreground mb-4">Everything you might want to know</h2>
+          <TextReveal
+            as="h2"
+            text="Everything you might want to know"
+            splitBy="characters"
+            staggerDelay={0.015}
+            duration={0.5}
+            className="font-display font-bold text-3xl md:text-4xl text-foreground mb-4"
+          />
           <p className="text-muted-foreground">Can't find your answer? We reply in under 4 hours.</p>
+
         </motion.div>
 
         <Accordion type="single" collapsible className="space-y-3">
