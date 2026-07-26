@@ -145,7 +145,7 @@ function CursorContainer({
   ...props
 }: CursorContainerProps) {
   const { containerRef, global, active } = useCursor();
-  React.useImperativeHandle(ref, () => containerRef.current as HTMLDivElement);
+  React.useImperativeHandle(ref as React.Ref<HTMLDivElement>, () => containerRef.current as HTMLDivElement);
 
   const Component = asChild ? Slot : motion.div;
 
@@ -168,7 +168,7 @@ type CursorProps = WithAsChild<
 
 function Cursor({ ref, asChild = false, style, ...props }: CursorProps) {
   const { cursorPos, active, containerRef, cursorRef, global } = useCursor();
-  React.useImperativeHandle(ref, () => cursorRef.current as HTMLDivElement);
+  React.useImperativeHandle(ref as React.Ref<HTMLDivElement>, () => cursorRef.current as HTMLDivElement);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
