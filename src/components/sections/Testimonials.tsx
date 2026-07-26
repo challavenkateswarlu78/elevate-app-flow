@@ -1,9 +1,11 @@
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import { TextReveal } from "@/components/unlumen-ui/text-reveal";
+import { GradientBorderCard } from "@/components/effects/GradientBorderCard";
 import avatar1 from "@/assets/avatar-1.jpg";
 import avatar2 from "@/assets/avatar-2.jpg";
 import avatar3 from "@/assets/avatar-3.jpg";
+
 
 const testimonials = [
   { quote: "We were on 6 tools and paying $2,200/month. NexaCloud cut that to $89 and now our whole team actually knows where everything is.", name: "Priya M.", role: "Founder", company: "Stackflow Agency", avatar: avatar1 },
